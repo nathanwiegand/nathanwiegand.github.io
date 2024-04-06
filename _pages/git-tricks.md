@@ -12,9 +12,12 @@ categories: pages
 alias update='git fetch origin && git merge orgin/main'
 ```
 
-### Don't commit to main
+### don't commit to main
 Important for working with a team where everyone works on the same repo and has dev branches.
+
+Add a new pre-commit hook in your repo.
 ```bash
+# .git/hooks/pre-commit
 #!/bin/sh
 
 branch="$(git rev-parse --abbrev-ref HEAD)"
