@@ -23,5 +23,9 @@ defaults:
       type: post
     values:
       tags: Posts
+collections:
+  pages:
+    output: true
+    permalink: /:collection/:path/
 rss: rss
 
