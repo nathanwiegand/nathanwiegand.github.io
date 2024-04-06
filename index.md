@@ -7,4 +7,12 @@
       <li><a href="{{ post.url }}">{{ post.date | date: "%B %Y" }} - {{ post.title }}</a></li>
     {% endfor %}
   </ul>
+  <ul>
+	  {% for blog in site.pages %}
+	    <li>
+	      <a href="{{ blog.url }}">{{ blog.title }}</a>
+	    </li>
+	  {% endfor %}
+  </ul>
+
 {% endfor %}
