@@ -1,3 +1,10 @@
+---
+layout: post
+title: "Git Tricks"
+date: 2024-04-03 14:07:00
+categories: pages
+---
+
 ## Git tricks
 
 ### update

@@ -17,15 +17,17 @@ plugins:
 titles_from_headings:
   strip_title: true
   collections: true
+
 defaults:
   - scope:
       path: ""
       type: post
     values:
       tags: Posts
+
 collections:
   pages:
     output: true
-    permalink: /pages/:path/
+    permalink: /pages/:name.html
 rss: rss
 
