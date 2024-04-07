@@ -27,3 +27,8 @@ if [ "$branch" = "main" ]; then
   exit 1
 fi
 ```
+
+### unstage a file
+```bash
+git restore --staged some-file.py
+```
