@@ -4,17 +4,21 @@
 Today I was thinking about softmax again. This time, I was wondering what would happen if you scaled-up one of its terms. How would the other terms go down? Specifically, I was wondering what would happen to the other terms if you averaged the max term with $1$.
 
 Let's start here.
+
 $$
 \text{softmax}(z)_i = \frac{e^{z_i}}{\sum_{j=1}^{N} e^{z_j}}
 $$
 
 Now, let's assume we scale up the $z_1$ case.
+
 $$
 \text{softmax}(z)_1 = \frac{e^{z_1 + c}}{e^{z_1+c}+\sum_{j=2}^{N} e^{z_j}}
 $$
+
 That denominator is just pulling out the $e^{z_1}$ term and scaling it.
 
 That's just:
+
 $$
 \text{softmax}(z)_1 = \frac{e^ce^{z_1}}{e^ce^{z_1}+\sum_{j=2}^{N} e^{z_j}}
 $$
@@ -22,6 +26,7 @@ $$
 Ok, now let's do a little bit of rewriting. 
 
 Let,
+
 $$
 \begin{aligned}
 A &= e^{z_1} \\
@@ -31,7 +36,9 @@ p &= \text{softmax(.) before scaling} \\
 q &= \text{softmax(.) after scaling} \\
 \end{aligned}
 $$
+
 Then we rewrite the above as 
+
 $$
 \begin{aligned}
 \text{softmax}(z)_1 &= \frac{e^ce^{z_1}}{e^ce^{z_1}+\sum_{j=2}^{N} e^{z_j}} \\
@@ -41,6 +48,7 @@ $$
 $$
 
 Now, let's solve for $C$.
+
 $$
 \begin{aligned}
 q(CA+B) &= CA \\
@@ -57,6 +65,7 @@ e^c &= \frac{\sum_{j=2}^{N} e^{z_j} }{ e^{z_1}} \frac{q}{1-q} \\
 $$
 
 Note, the summation is missing the first term. Let's rewrite so that it's back
+
 $$
 \begin{aligned}
 e^c &= \frac{-e^{z_1} + \sum_{j=1}^{N} e^{z_j} }{ e^{z_1}} \frac{q}{1-q} \\
@@ -68,6 +77,7 @@ e^c &= \frac{-e^{z_1} + \sum_{j=1}^{N} e^{z_j} }{ e^{z_1}} \frac{q}{1-q} \\
 $$
 
 Solving for $c$,
+
 $$
 \begin{align}
 c &= \ln({\frac{1-p}{p}\frac{q}{1-q}}) \\
@@ -81,6 +91,7 @@ Ok, interesting. We have a way of scaling everything the whole thing by pegging 
 But, back to my original goal, I want to find the midpoint between the max term and $1$.
 
 So,
+
 $$
 q = \frac{1+p}{2} \\
 $$
