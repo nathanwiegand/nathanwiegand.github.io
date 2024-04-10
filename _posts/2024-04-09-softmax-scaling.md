@@ -95,13 +95,14 @@ So,
 $$
 q = \frac{1+p}{2} \\
 $$
+
 $$
-\begin{align}
+\begin{aligned}
 c &=\ln{(\frac{\frac{1+p}{2}}{1-\frac{1+p}{2}})} -\ln{(\frac{p}{1-p})}  \\
 &= \ln{(\frac{\frac{1+p}{2}}{\frac{1-p}{2}})}  -\ln{(\frac{p}{1-p})}  \\
 &= \ln{({\frac{1+p}{1-p}})}  -\ln{(\frac{p}{1-p})}  \\
 &= \ln{({\frac{1+p}{p}})}
-\end{align}
+\end{aligned}
 $$
 
 Ok, at this point I'm feeling pretty damn clever. That was some good algebra I just scratched out.
