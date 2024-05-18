@@ -12,7 +12,13 @@ tags:
 
 <table>
 <tr>
+<td style='width:200px'>
+</td>
 <td>
+</td>
+</tr>
+<tr>
+<td style='width:200px'>
 <img src="https://i.ytimg.com/vi/yJDv-zdhzMY/hqdefault.jpg" width=200>
 </td>
 <td valign="top">
@@ -34,8 +40,8 @@ This was in an era with punched cards and mainframes. It showed a glimps of the 
 </td>
 </tr>
 <tr>
-<td>
-<img src="https://m.media-amazon.com/images/I/71QlpibWMgL._SY522_.jpg" width="200" style='width:200px'>
+<td style='width:200px'>
+<img src="https://m.media-amazon.com/images/I/71QlpibWMgL._SY522_.jpg" width="200">
 </td>
 <td valign="top">
 
