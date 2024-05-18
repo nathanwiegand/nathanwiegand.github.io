@@ -35,7 +35,7 @@ This was in an era with punched cards and mainframes. It showed a glimps of the 
 </tr>
 <tr>
 <td>
-<img src="https://m.media-amazon.com/images/I/71QlpibWMgL._SY522_.jpg" width="200">
+<img src="https://m.media-amazon.com/images/I/71QlpibWMgL._SY522_.jpg" width="200" style='width:200px'>
 </td>
 <td valign="top">
 
