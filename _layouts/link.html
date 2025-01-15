@@ -11,9 +11,9 @@ layout: default
     </div>
     {% endif %}
 
-    {% if page.url %}
+    {% if page.external_url %}
     <div class="external-link">
-        <a href="{{ page.url }}" target="_blank" rel="noopener noreferrer">Visit Original Link</a>
+        <a href="{{ page.external_url }}" target="_blank" rel="noopener noreferrer">{{ page.external_url }}</a>
     </div>
     {% endif %}
 
