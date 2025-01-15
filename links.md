@@ -12,13 +12,20 @@ permalink: /links/
         gap: 0.5rem;
         align-items: center;
     }
+    .external-link {
+        color: darkorange;
+        font-size: 0.8em;
+    }
+    article {
+        margin-bottom: 1rem;
+    }
 </style>
 
 # Links
 
 {% for link in site.links %}
   <article class="link-entry">
-    <h2><a href="{{ link.url | relative_url }}">{{ link.title }}</a></h2>
+    <a href="{{ link.url | relative_url }}">{{ link.title }}</a><br>
     {% if link.external_url %}
       <div class="external-link">
         <a href="{{ link.external_url }}" target="_blank" rel="noopener noreferrer">{{ link.external_url }}</a>
