@@ -2,7 +2,7 @@
 layout: default
 ---
 <style>
-    .tags {
+    .tag {
         display: flex;
         flex-wrap: wrap;
         gap: 0.5rem;
@@ -14,7 +14,7 @@ layout: default
 
     {% if page.tags %}
     <div class="tags">
-        Tags: {{ page.tags | join: ", " }}
+        Tags: {{ <span class="tag">page.tags</span> | join: ", " }}
     </div>
     {% endif %}
 
