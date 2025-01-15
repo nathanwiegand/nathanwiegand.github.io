@@ -14,7 +14,10 @@ layout: default
 
     {% if page.tags %}
     <div class="tags">
-        Tags: {{ <span class="tag">page.tags</span> | join: ", " }}
+        Tags:
+        {% for tag in link.tags %}
+        <span class="tag">{{ tag }}</span>
+        {% endfor %}
     </div>
     {% endif %}
 
