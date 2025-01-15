@@ -5,10 +5,12 @@ permalink: /links/
 ---
 <style>
     .tag {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
         color: darkorange;
+    }
+    .tags {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
     }
 </style>
 
@@ -19,7 +21,7 @@ permalink: /links/
     <h2><a href="{{ link.url | relative_url }}">{{ link.title }}</a></h2>
     {% if link.external_url %}
       <div class="external-link">
-        <a href="{{ link.external_url }}" target="_blank" rel="noopener noreferrer">link</a>
+        <a href="{{ link.external_url }}" target="_blank" rel="noopener noreferrer">{{ link.external_url }}</a>
       </div>
     {% endif %}
     {% if link.tags %}
