@@ -1,7 +1,14 @@
 ---
 layout: default
 ---
-
+<style>
+    .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        color: darkorange;
+    }
+</style>
 <article class="link">
     <h1>{{ page.title }}</h1>
 
@@ -19,7 +26,7 @@ layout: default
 
     {% if page.date %}
     <div class="date">
-        Added on: {{ page.date | date: "%Y-%m-%d" }}
+        Added: {{ page.date | date: "%Y-%m-%d" }}
     </div>
     {% endif %}
 
