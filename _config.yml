@@ -24,6 +24,11 @@ defaults:
       type: post
     values:
       tags: Posts
+  - scope:
+      path: ""
+      type: links
+    values:
+      layout: link
 
 collections:
   pages:

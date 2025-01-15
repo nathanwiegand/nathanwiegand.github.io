@@ -1,0 +1,29 @@
+---
+layout: default
+---
+
+<article class="link">
+    <h1>{{ page.title }}</h1>
+
+    {% if page.tags %}
+    <div class="tags">
+        Tags: {{ page.tags | join: ", " }}
+    </div>
+    {% endif %}
+
+    {% if page.url %}
+    <div class="external-link">
+        <a href="{{ page.url }}" target="_blank" rel="noopener noreferrer">Visit Original Link</a>
+    </div>
+    {% endif %}
+
+    {% if page.date %}
+    <div class="date">
+        Added on: {{ page.date | date: "%Y-%m-%d" }}
+    </div>
+    {% endif %}
+
+    <div class="content">
+        {{ content }}
+    </div>
+</article>
