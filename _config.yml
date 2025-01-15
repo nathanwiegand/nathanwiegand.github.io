@@ -29,5 +29,8 @@ collections:
   pages:
     output: true
     permalink: /pages/:name.html
+  links:
+    output: true
+    permalink: /links/:name.html
 rss: rss
 
