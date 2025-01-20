@@ -3,7 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap');
 
 body {
-    background-color: white;
+    background-color: rgb(250, 249, 247);
     font-family: monospace;
     width: 800px;
     margin: auto;
@@ -85,4 +85,28 @@ section#downloads {
 
 #main_content .post-content li::after {
     display: none;
+}
+
+article {
+    background-color: white;
+    border: 2px solid #333;
+    position: relative;
+    padding: 20px;
+    margin: 40px auto;
+}
+
+/* Dithered shadow effect for posts */
+article::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    right: -8px;
+    bottom: -8px;
+    background-image:
+        radial-gradient(#333 20%, transparent 20%),
+        radial-gradient(#333 20%, transparent 20%);
+    background-position: 0 0, 2px 2px;
+    background-size: 4px 4px;
+    z-index: -1;
 }
