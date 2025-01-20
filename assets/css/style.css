@@ -1,0 +1,88 @@
+@import "{{ site.theme }}";
+
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap');
+
+body {
+    background-color: white;
+    font-family: monospace;
+    width: 800px;
+    margin: auto;
+
+    font-family: "Inconsolata", serif;
+    font-optical-sizing: auto;
+    /* font-weight: <weight>; */
+    /* font-style: normal; */
+    font-variation-settings:
+        "wdth" 100;
+    /* font-family: "Source Code Pro", serif; */
+    /* font-optical-sizing: auto; */
+    /* font-weight: <weight>; */
+    font-style: normal;
+
+}
+
+a {
+    /* color: #ff6b35; */
+    color: darkblue;
+}
+
+#a-title {
+    font-size: 1.25em;
+}
+
+section#downloads {
+    display: none;
+}
+
+#main_content :not(.post-content) ul {
+    list-style-type: none;
+    padding-inline-start: 0px;
+}
+
+#main_content :not(.post-content) li {
+    display: block;
+    position: relative;
+    width: 600px;
+    padding: 20px;
+    margin: 40px auto;
+    background: white;
+    border: 2px solid #333;
+    margin-left: -40px;
+}
+
+/* Dithered shadow effect */
+#main_content :not(.post-content) li::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    right: -8px;
+    bottom: -8px;
+    background-image:
+        radial-gradient(#333 20%, transparent 20%),
+        radial-gradient(#333 20%, transparent 20%);
+    background-position: 0 0, 2px 2px;
+    background-size: 4px 4px;
+    z-index: -1;
+}
+
+/* Restore default list styles for post-content */
+
+#main_content .post-content ul {
+    list-style-type: disc;
+    padding-left: 40px;
+    margin: 1em 0;
+}
+
+#main_content .post-content li {
+    display: list-item;
+    width: auto;
+    padding: 0;
+    margin: 0;
+    background: none;
+    border: none;
+}
+
+#main_content .post-content li::after {
+    display: none;
+}

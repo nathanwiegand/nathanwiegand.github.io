@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.10.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-01-19T21:07:44-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Nathan Wiegand</title><subtitle>Ramblings</subtitle><entry><title type="html">Softmax explorations cont’d.</title><link href="http://localhost:4000/2024/04/09/softmax-scaling.html" rel="alternate" type="text/html" title="Softmax explorations cont’d." /><published>2024-04-09T00:00:00-05:00</published><updated>2024-04-09T00:00:00-05:00</updated><id>http://localhost:4000/2024/04/09/softmax-scaling</id><content type="html" xml:base="http://localhost:4000/2024/04/09/softmax-scaling.html"><![CDATA[<h3 id="in-which-i-get-excited-then-feel-dumb-about-math">(In which I get excited, then feel dumb about math)</h3>
+
+<p>Today I was thinking about softmax again. This time, I was wondering what would happen if you scaled-up one of its terms. How would the other terms go down? Specifically, I was wondering what would happen to the other terms if you averaged the max term with $1$.</p>
+
+<p>Let’s start here.</p>
+
+\[\text{softmax}(z)_i = \frac{e^{z_i}}{\sum_{j=1}^{N} e^{z_j}}\]
+
+<p>Now, let’s assume we scale up the $z_1$ case.</p>
+
+\[\text{softmax}(z)_1 = \frac{e^{z_1 + c}}{e^{z_1+c}+\sum_{j=2}^{N} e^{z_j}}\]
+
+<p>That denominator is just pulling out the $e^{z_1}$ term and scaling it.</p>
+
+<p>That’s just:</p>
+
+\[\text{softmax}(z)_1 = \frac{e^ce^{z_1}}{e^ce^{z_1}+\sum_{j=2}^{N} e^{z_j}}\]
+
+<p>Ok, now let’s do a little bit of rewriting.</p>
+
+<p>Let,</p>
+
+\[\begin{aligned}
+A &amp;= e^{z_1} \\
+B &amp;= \sum_{j=2}^{N} e^{z_j}  \\
+C &amp;= e^c \\
+p &amp;= \text{softmax(.) before scaling} \\
+q &amp;= \text{softmax(.) after scaling} \\
+\end{aligned}\]
+
+<p>Then we rewrite the above as</p>
+
+\[\begin{aligned}
+\text{softmax}(z)_1 &amp;= \frac{e^ce^{z_1}}{e^ce^{z_1}+\sum_{j=2}^{N} e^{z_j}} \\
+&amp;= \frac{CA}{CA + B} \\
+&amp;= q
+\end{aligned}\]
+
+<p>Now, let’s solve for $C$.</p>
+
+\[\begin{aligned}
+q(CA+B) &amp;= CA \\
+qCA + qB &amp;= CA \\
+qB &amp;= CA - qCA \\
+qB &amp;= CA(1-q) \\
+\\
+C &amp;= \frac{qB}{A(1-q)} \\
+ &amp;= \frac{qB}{A(1-q)} \\
+ &amp;= \frac{B}{A} \frac{q}{1-q} \\
+\\
+e^c &amp;= \frac{\sum_{j=2}^{N} e^{z_j} }{ e^{z_1}} \frac{q}{1-q} \\
+\end{aligned}\]
+
+<p>Note, the summation is missing the first term. Let’s rewrite so that it’s back</p>
+
+\[\begin{aligned}
+e^c &amp;= \frac{-e^{z_1} + \sum_{j=1}^{N} e^{z_j} }{ e^{z_1}} \frac{q}{1-q} \\
+&amp;= (\frac{-e^{z_1}}{e^{z_1}}+ \frac{\sum_{j=1}^{N} e^{z_j}}{e^{z_1}})   \frac{q}{1-q} \\
+&amp;= (-1 + \frac{1}{p})\frac{q}{1-q} \\
+&amp;= \frac{1-p}{p}\frac{q}{1-q}
+
+\end{aligned}\]
+
+<p>Solving for $c$,</p>
+
+\[\begin{align}
+c &amp;= \ln({\frac{1-p}{p}\frac{q}{1-q}}) \\
+ &amp;= \ln{(\frac{1-p}{p})}+\ln{(\frac{q}{1-q})} \\
+ &amp;= \ln{(\frac{q}{1-q})} -\ln{(\frac{p}{1-p})} \\
+\end{align}\]
+
+<p>Ok, interesting. We have a way of scaling everything the whole thing by pegging one term. Nice.</p>
+
+<p>But, back to my original goal, I want to find the midpoint between the max term and $1$.</p>
+
+<p>So,</p>
+
+\[q = \frac{1+p}{2} \\\]
+
+\[\begin{aligned}
+c &amp;=\ln{(\frac{\frac{1+p}{2}}{1-\frac{1+p}{2}})} -\ln{(\frac{p}{1-p})}  \\
+&amp;= \ln{(\frac{\frac{1+p}{2}}{\frac{1-p}{2}})}  -\ln{(\frac{p}{1-p})}  \\
+&amp;= \ln{({\frac{1+p}{1-p}})}  -\ln{(\frac{p}{1-p})}  \\
+&amp;= \ln{({\frac{1+p}{p}})}
+\end{aligned}\]
+
+<p>Ok, at this point I’m feeling pretty damn clever. That was some good algebra I just scratched out.</p>
+
+<p>But then I thought, “wonder what happens if you just <em>average</em> each term of the $z$ vector with the vector $[1, 0, … 0]$” (assuming that $z_1$ is the maximum value).</p>
+
+<p>Well, I put it all in a spreadsheet, and know what? IT’S EXACTLY THE SAME!</p>
+
+<p>All that algebra, derived an exactly formula for $c$… and I could have just averaged each term!</p>
+
+<p>Oh well, I’m still happy with the result. And I’m happy that I’ve demonstrated that the thing I thought was a heuristic (averaging terms) is actually exact.</p>
+
+<p>Yes, my hobbies are awesome and you’re jealous.</p>]]></content><author><name></name></author><category term="Posts" /><summary type="html"><![CDATA[(In which I get excited, then feel dumb about math)]]></summary></entry><entry><title type="html">Softmax observations</title><link href="http://localhost:4000/2024/04/07/softmax.html" rel="alternate" type="text/html" title="Softmax observations" /><published>2024-04-07T00:00:00-05:00</published><updated>2024-04-07T00:00:00-05:00</updated><id>http://localhost:4000/2024/04/07/softmax</id><content type="html" xml:base="http://localhost:4000/2024/04/07/softmax.html"><![CDATA[<p>The interpretation of softmax is for a vector of Reals we can convert it to a probability distribution such that term $i$ reflects the relative liklihood of it versus the rest. But, let’s play.</p>
+
+\[\text{softmax}(z)_i = \frac{e^{z_i}}{\sum_{j=1}^{N} e^{z_j}}\]
+
+<p>Consider the 2-term case:
+\(\begin{aligned}
+\text{softmax}(z)_0 &amp;= \frac{e^{z_0}}{e^{z_0} + e^{z_1}} \\
+                    &amp;= \frac{e^{-z_0}}{e^{-z_0}}\frac{e^{z_0}}{e^{z_0} + e^{z_1}} \\
+                    &amp;= \frac{1}{1 + e^{z_1-z_0}}
+\end{aligned}\)</p>
+
+<p>I find this suprising. It means that the difference in the softmax value isn’t a function of the two terms, it’s a function of the <em>difference</em> between those terms.</p>
+
+\[\begin{aligned}
+\text{softmax}([0, 1])_0 &amp;= \text{softmax}([1000, 1001])_0 \\
+&amp;= 0.2689414214
+\end{aligned}\]
+
+<p>Intuitively, 1000 and 1001 feel “closer” to me than 0 and 1.</p>
+
+<p>What if we norm by the min? (Let’s ignore the 0 case for the moment.)</p>
+
+\[\text{Let } m = \min_k(z_k)\]
+
+\[\text{softmax}_{min. norm}(z)_i = \frac{e^{z_i/m}}{\sum_{j=1}^{N} e^{z_j/m}}\]
+
+<p>Let’s consider just the 1000 and 1001 case.</p>
+
+\[\begin{aligned}
+\text{softmax}_{min. norm}(1000, 1001)_0 &amp;= \frac{e^{1000/1000}}{e^{1000/1000} + e^{1001/1000}} \\
+&amp;= \frac{e}{e+e^1.001} \\
+&amp;= 0.49975
+
+\end{aligned}\]
+
+<p>Depending on what our problem domain is, this feels more intuitive than 0.269. I suppose we can think of this as the prior on the domain.</p>]]></content><author><name></name></author><category term="Posts" /><summary type="html"><![CDATA[The interpretation of softmax is for a vector of Reals we can convert it to a probability distribution such that term $i$ reflects the relative liklihood of it versus the rest. But, let’s play.]]></summary></entry><entry><title type="html">Hello world</title><link href="http://localhost:4000/2024/04/06/hello-world.html" rel="alternate" type="text/html" title="Hello world" /><published>2024-04-06T00:00:00-05:00</published><updated>2024-04-06T00:00:00-05:00</updated><id>http://localhost:4000/2024/04/06/hello-world</id><content type="html" xml:base="http://localhost:4000/2024/04/06/hello-world.html"><![CDATA[]]></content><author><name></name></author><category term="Posts" /><summary type="html"><![CDATA[]]></summary></entry></feed>
