@@ -1,4 +1,219 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.10.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-01-19T21:17:37-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Nathan Wiegand</title><subtitle>Ramblings</subtitle><entry><title type="html">Softmax explorations cont’d.</title><link href="http://localhost:4000/2024/04/09/softmax-scaling.html" rel="alternate" type="text/html" title="Softmax explorations cont’d." /><published>2024-04-09T00:00:00-05:00</published><updated>2024-04-09T00:00:00-05:00</updated><id>http://localhost:4000/2024/04/09/softmax-scaling</id><content type="html" xml:base="http://localhost:4000/2024/04/09/softmax-scaling.html"><![CDATA[<h3 id="in-which-i-get-excited-then-feel-dumb-about-math">(In which I get excited, then feel dumb about math)</h3>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.10.0">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-01-24T20:26:46-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Nathan Wiegand</title><subtitle>Ramblings</subtitle><entry><title type="html">Matrices aren’t real</title><link href="http://localhost:4000/2024/04/20/matrices-arent-real.html" rel="alternate" type="text/html" title="Matrices aren’t real" /><published>2024-04-20T00:00:00-05:00</published><updated>2024-04-20T00:00:00-05:00</updated><id>http://localhost:4000/2024/04/20/matrices-arent-real</id><content type="html" xml:base="http://localhost:4000/2024/04/20/matrices-arent-real.html"><![CDATA[<p>I’ve been reading Gilbert Strang’s Linear Algebra book (link). He points out that a matrix times a vector can be though of as a linear combination of the columns of the matrix.
+$$
+\begin{bmatrix}
+a &amp; b &amp; c <br />
+d &amp; e &amp; f <br />
+g &amp; h &amp; i <br />
+\end{bmatrix}
+\begin{bmatrix}
+x \ y \ z
+\end{bmatrix}
+= x \begin{bmatrix}a\d\j\end{bmatrix}</p>
+<ul>
+  <li>y \begin{bmatrix}b\e\h\end{bmatrix}</li>
+  <li>z \begin{bmatrix}c\f\i\end{bmatrix}
+$$</li>
+</ul>
+
+<p>I like this way of thinking about it. But then I got to thinking about a linear algebra over other types.</p>
+
+<p>Consider this matrix multiplication:
+\(\begin{bmatrix}
+a_{11} &amp; a_{12} &amp; a_{13} \\
+a_{21} &amp; a_{32} &amp; a_{23} \\
+a_{31} &amp; a_{22} &amp; a_{33} \\
+\end{bmatrix} 
+\times
+\begin{bmatrix}
+b_{11} &amp; b_{12} &amp; b_{13} \\
+b_{21} &amp; b_{32} &amp; b_{23} \\
+b_{31} &amp; b_{22} &amp; b_{33} \\
+\end{bmatrix}\)</p>
+
+<p>But let’s not think about $b$ as a matrix over reals. Let’s rewrite it.
+\(\begin{bmatrix}
+b_{11} &amp; b_{12} &amp; b_{13} \\
+b_{21} &amp; b_{32} &amp; b_{23} \\
+b_{31} &amp; b_{22} &amp; b_{33} \\
+\end{bmatrix} 
+= 
+\begin{bmatrix}
+\begin{bmatrix}
+b_{11} &amp; b_{12} &amp; b_{13}
+\end{bmatrix} \\
+\begin{bmatrix}
+b_{21} &amp; b_{22} &amp; b_{23}
+\end{bmatrix} \\
+\begin{bmatrix}
+b_{31} &amp; b_{32} &amp; b_{33} \\
+\end{bmatrix}
+\end{bmatrix}
+= 
+\begin{bmatrix}
+b_{1,*} \\
+b_{2,*} \\
+b_{3,*} \\
+\end{bmatrix}\)</p>
+
+<p>That is, we think of $b$ not as a matrix at all, but as a column vector where
+each value in the column vector is a row vector.</p>
+
+<p>Back to the matrix mult.</p>
+
+\[\begin{bmatrix}
+a_{11} &amp; a_{12} &amp; a_{13} \\
+a_{21} &amp; a_{32} &amp; a_{23} \\
+a_{31} &amp; a_{22} &amp; a_{33} \\
+\end{bmatrix} 
+\begin{bmatrix}
+b_{1,*} \\
+b_{2,*} \\
+b_{3,*} \\
+\end{bmatrix}
+= b_{1,*} \begin{bmatrix}a_{11}\\ a_{21}\\a{31} \end{bmatrix}
++ b_{2,*} \begin{bmatrix}a_{12}\\ a_{22}\\a{32} \end{bmatrix}
++ b_{3,*} \begin{bmatrix}a_{13}\\ a_{23}\\a{33} \end{bmatrix}\]
+
+<p>The types work out, because we have row vector times column vector which in our example would result in a $3\times3$ matrix.</p>
+
+<p>But can’t we take this further? Let’s think of $a$ not as a matrix, but as a row vector.</p>
+
+\[\begin{bmatrix}
+\begin{bmatrix}a_{11}\\ a_{21}\\a_{31} \end{bmatrix}
+\begin{bmatrix}a_{12}\\ a_{22}\\a_{32} \end{bmatrix}
+\begin{bmatrix}a_{13}\\ a_{23}\\a_{33} \end{bmatrix}
+\end{bmatrix}
+= 
+\begin{bmatrix}
+a_{*,1} &amp; 
+a_{*,2} &amp; 
+a_{*,3}
+\end{bmatrix}\]
+
+<p>Our multiplication then is:
+\(\begin{bmatrix}
+a_{*,1} &amp; 
+a_{*,2} &amp; 
+a_{*,3}
+\end{bmatrix}
+\begin{bmatrix}
+b_{1,*} \\
+b_{2,*} \\
+b_{3,*} \\
+\end{bmatrix}
+= 
+a_{*,1}b_{1,*} + a_{*,2}b_{2,*} + a_{*,3}b_{3,*}\)</p>
+
+<p>Zooming in on the first term:
+\(a_{*,1}b_{1,*} =
+\begin{bmatrix}a_{11}\\ a_{21}\\a_{31} \end{bmatrix} 
+\begin{bmatrix}
+b_{11} &amp; b_{12} &amp; b_{13}
+\end{bmatrix} = 
+\begin{bmatrix}
+a_{11}b_{11} &amp; a_{11}b_{12} &amp; a_{11}b_{13} \\
+a_{21}b_{11} &amp; a_{21}b_{12} &amp; a_{21}b_{13} \\
+a_{31}b_{11} &amp; a_{31}b_{12} &amp; a_{31}b_{13} \\
+\end{bmatrix}\)</p>
+
+<p>Putting it all together
+\(a_{*,1}b_{1,*} + a_{*,2}b_{2,*} + a_{*,3}b_{3,*}  \\\)
+\(= 
+\begin{bmatrix}
+a_{11}b_{11} &amp; a_{11}b_{12} &amp; a_{11}b_{13} \\
+a_{21}b_{11} &amp; a_{21}b_{12} &amp; a_{21}b_{13} \\
+a_{31}b_{11} &amp; a_{31}b_{12} &amp; a_{31}b_{13} \\
+\end{bmatrix}  +
+\begin{bmatrix}
+a_{12}b_{21} &amp; a_{12}b_{22} &amp; a_{12}b_{23} \\
+a_{22}b_{21} &amp; a_{22}b_{22} &amp; a_{22}b_{23} \\
+a_{32}b_{21} &amp; a_{32}b_{22} &amp; a_{32}b_{23} \\
+\end{bmatrix} +
+\begin{bmatrix}
+a_{13}b_{31} &amp; a_{13}b_{32} &amp; a_{13}b_{33} \\
+a_{23}b_{31} &amp; a_{23}b_{32} &amp; a_{23}b_{33} \\
+a_{33}b_{31} &amp; a_{33}b_{32} &amp; a_{33}b_{33} \\
+\end{bmatrix}\)
+$$
+= 
+\begin{bmatrix}
+a_{11}b_{11} + a_{12}b_{21}+a_{13}b_{31} &amp; a_{11}b_{12}+a_{12}b_{22}+a_{13}b_{32} &amp; a_{11}b_{13} + a_{12}b_{23} +  a_{13}b_{33} <br />
+&amp; …  &amp; <br />
+&amp; &amp; …</p>
+
+<p>\end{bmatrix}
+$$</p>
+
+<p>Looking at the first row, we can convince ourselves this is the result of traditional matrix mult, multiplying the row of $a$ times the columns of $b$.</p>
+
+<p>Going back to looking at the traditional matrix view, let’s swap the types in this story. Let’s make $a$ a column vector of row vectors, and $b$ the opposite.</p>
+
+<p>\(\begin{bmatrix}
+a_{1,*} \\
+a_{2,*} \\
+a_{3,*}
+\end{bmatrix}
+\begin{bmatrix}
+b_{*, 1} &amp;
+b_{*, 2} &amp;
+b_{*, 3}
+\end{bmatrix}\)
+\(=
+\begin{bmatrix}
+a_{1,*}b_{*,1} &amp; a_{1,*}b_{*,2} &amp; a_{1,*}b_{*,3} \\ 
+a_{2,*}b_{*,1} &amp; a_{2,*}b_{*,2} &amp; a_{2,*}b_{*,3} \\ 
+a_{3,*}b_{*,1} &amp; a_{3,*}b_{*,2} &amp; a_{3,*}b_{*,3} \\ 
+\end{bmatrix}\)
+Now each inner term is the product of a row-vector with a column vector, yielding a scalar.
+$$
+=
+\begin{bmatrix}
+a_{11}b_{11}+a_{12}b_{21}+a_{13}b_{31} &amp; 
+a_{11}b_{12}+a_{12}b_{22}+a_{13}b_{32} &amp; 
+a_{11}b_{13}+a_{12}b_{23}+a_{13}b_{33} \</p>
+
+<p>&amp; …  &amp; <br />
+&amp; &amp; …
+\end{bmatrix}
+$$</p>
+
+<p>Ok, this is all the same result, unsurprisingly.</p>
+
+<p>Now, so what? To be honest, I don’t know yet. One benefit, I suppose is that we have a simple way of parallelizing.</p>
+
+<p>The naive matrix multiplication algorithm is:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">matrix_multiplication</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">):</span>
+    <span class="n">rows_A</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+    <span class="n">cols_A</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">rows_B</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+    <span class="n">cols_B</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">B</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols_B</span><span class="p">)]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows_A</span><span class="p">)]</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows_A</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols_B</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols_A</span><span class="p">):</span>
+                <span class="n">result</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">B</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">j</span><span class="p">]</span>
+    
+    <span class="k">return</span> <span class="n">result</span>
+</code></pre></div></div>
+
+<p>Now let’s define two new functions:</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">multiply_rowvector_with_colvector</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+    <span class="n">cols_r</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+    <span class="n">rows_c</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">cols_r</span> <span class="o">==</span> <span class="n">rows_c</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols_r</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">+=</span> <span class="n">r</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">c</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+<span class="k">def</span> <span class="nf">multiply_colvector_with_rowvector</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+    <span class="n">cols_r</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+    <span class="n">rows_c</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">cols_r</span> <span class="o">==</span> <span class="n">rows_c</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cols_r</span><span class="p">)]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows_c</span><span class="p">)]</span>
+</code></pre></div></div>]]></content><author><name></name></author><category term="Posts" /><summary type="html"><![CDATA[I’ve been reading Gilbert Strang’s Linear Algebra book (link). He points out that a matrix times a vector can be though of as a linear combination of the columns of the matrix. $$ \begin{bmatrix} a &amp; b &amp; c d &amp; e &amp; f g &amp; h &amp; i \end{bmatrix} \begin{bmatrix} x \ y \ z \end{bmatrix} = x \begin{bmatrix}a\d\j\end{bmatrix} y \begin{bmatrix}b\e\h\end{bmatrix} z \begin{bmatrix}c\f\i\end{bmatrix} $$]]></summary></entry><entry><title type="html">Softmax explorations cont’d.</title><link href="http://localhost:4000/2024/04/09/softmax-scaling.html" rel="alternate" type="text/html" title="Softmax explorations cont’d." /><published>2024-04-09T00:00:00-05:00</published><updated>2024-04-09T00:00:00-05:00</updated><id>http://localhost:4000/2024/04/09/softmax-scaling</id><content type="html" xml:base="http://localhost:4000/2024/04/09/softmax-scaling.html"><![CDATA[<h3 id="in-which-i-get-excited-then-feel-dumb-about-math">(In which I get excited, then feel dumb about math)</h3>
 
 <p>Today I was thinking about softmax again. This time, I was wondering what would happen if you scaled-up one of its terms. How would the other terms go down? Specifically, I was wondering what would happen to the other terms if you averaged the max term with $1$.</p>
 
